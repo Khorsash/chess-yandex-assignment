@@ -7,7 +7,7 @@ def modulus(num):
     return num
 
 
-class Rock(Piece):
+class Rook(Piece):
     def __init__(self, row, col, color):
         super().__init__(row, col, color)
     

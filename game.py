@@ -3,7 +3,7 @@ from pawn import Pawn
 from queen import Queen
 from knight import Knight
 from bishop import Bishop
-from rock import Rock
+from rook import Rook
 from king import King
  
 
@@ -39,10 +39,10 @@ class Board:
         self.field = []
         for row in range(8):
             self.field.append([None] * 8)
-        self.field[0][0] = Rock(0, 0, WHITE)
-        self.field[0][7] = Rock(0, 7, WHITE)
-        self.field[7][0] = Rock(7, 0, BLACK)
-        self.field[7][7] = Rock(7, 7, BLACK)
+        self.field[0][0] = Rook(0, 0, WHITE)
+        self.field[0][7] = Rook(0, 7, WHITE)
+        self.field[7][0] = Rook(7, 0, BLACK)
+        self.field[7][7] = Rook(7, 7, BLACK)
 
         self.field[0][1] = Knight(0, 1, WHITE)
         self.field[0][6] = Knight(0, 6, WHITE)
