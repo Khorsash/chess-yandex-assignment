@@ -68,6 +68,8 @@ class Board:
             return False
         if piece.get_color() != self.color:
             return False
+        if self.field[row1][col1] is not None and self.field[row1][col1].get_color() == piece.get_color():
+            return False
         if not piece.can_move(row1, col1):
             return False
         self.field[row][col] = None  # Remove piece

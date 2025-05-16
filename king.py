@@ -14,8 +14,8 @@ class King(Piece):
     def char(self):
         return "K"
     
-    def can_move(self, row1, col1):
-        if super().can_move(row1, col1):
+    def can_move(self, row1, col1, board):
+        if super().can_move(row1, col1, board):
             if 0 <= modulus(row1-self.row) <= 1 and 0 <= modulus(col1-self.col) <= 1:
                 return True
         return False

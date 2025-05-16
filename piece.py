@@ -8,7 +8,7 @@ class Piece:
         self.col = col
         self.color = color
 
-    def can_move(self, row1, col1):
+    def can_move(self, row1, col1, board):
         return 0 <= row1 < 8 and 0 <= col1 < 8
 
     def set_position(self, row1, col1):
