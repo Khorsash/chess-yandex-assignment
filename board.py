@@ -39,8 +39,31 @@ class Board:
         self.field = []
         for row in range(8):
             self.field.append([None] * 8)
-        # White pawn on the E2 square.
-        self.field[1][4] = Pawn(1, 4, WHITE)  
+        self.field[0][0] = Rock(0, 0, WHITE)
+        self.field[0][7] = Rock(0, 7, WHITE)
+        self.field[7][0] = Rock(7, 0, BLACK)
+        self.field[7][7] = Rock(7, 7, BLACK)
+
+        self.field[0][1] = Knight(0, 1, WHITE)
+        self.field[0][6] = Knight(0, 6, WHITE)
+        self.field[7][1] = Knight(7, 1, BLACK)
+        self.field[7][6] = Knight(7, 6, BLACK)
+
+        self.field[0][2] = Bishop(0, 2, WHITE)
+        self.field[0][5] = Bishop(0, 5, WHITE)
+        self.field[7][2] = Bishop(7, 2, BLACK)
+        self.field[7][5] = Bishop(7, 5, BLACK)
+
+        self.field[0][3] = Queen(0, 3, WHITE)
+        self.field[0][4] = King(0, 4, WHITE)
+        self.field[7][3] = Queen(7, 3, BLACK)
+        self.field[7][4] = King(7, 4, BLACK)
+
+        for i in range(0, 8):
+            self.field[1][i] = Pawn(1, i, WHITE)
+
+        for i in range(0, 8):
+            self.field[6][i] = Pawn(6, i, BLACK)
 
     def current_player_color(self):
         return self.color
@@ -105,3 +128,5 @@ def main():
             print('Move successful')
         else:
             print('Coordinates incorrect. Try another move.')
+
+main()
