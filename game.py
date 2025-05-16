@@ -129,4 +129,5 @@ def main():
         else:
             print('Coordinates incorrect. Try another move.')
 
-main()
+if __name__  == "__main__":
+    main()
