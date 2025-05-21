@@ -6,8 +6,6 @@ from bishop import Bishop
 from rook import Rook
 from king import King
 
-import types
-
 def opponent(color):
     if color == WHITE:
         return BLACK
@@ -59,10 +57,10 @@ class Board:
         self.field[7][3] = Queen(7, 3, BLACK)
         self.field[7][4] = King(7, 4, BLACK)
 
-        self.white: list[Piece] = [self.field[0][0], self.field[0][7], self.field[0][1], self.field[0][6],
+        self.white = [self.field[0][0], self.field[0][7], self.field[0][1], self.field[0][6],
                                    self.field[0][2], self.field[0][5], self.field[0][3], self.field[0][4]]
 
-        self.black: list[Piece] = [self.field[7][0], self.field[7][7], self.field[7][1], self.field[7][6],
+        self.black = [self.field[7][0], self.field[7][7], self.field[7][1], self.field[7][6],
                                    self.field[7][2], self.field[7][5], self.field[7][3], self.field[7][4]]
         for i in range(0, 8):
             self.field[1][i] = Pawn(1, i, WHITE)
@@ -104,6 +102,8 @@ class Board:
             return False
         self.field[row][col] = None
         self.field[row1][col1] = piece 
+        if isinstance(piece, Pawn) and piece.start_position and abs(row1-row) == 2:
+            piece.start_position = False
         piece.set_position(row1, col1)
         self.color = opponent(self.color)
         return True
@@ -128,10 +128,6 @@ def main():
         # Display the position of pieces on the board
         print_board(board)
         # commands help
-        print('Commands:')
-        print('    exit                               -- exit')
-        print('    move <row> <col> <row1> <col1>     -- move from square (row, col)')
-        print('                                          to square (row1, col1)')
         # Invite the player of the correct color
         if board.current_player_color() == WHITE:
             print('White move:')
