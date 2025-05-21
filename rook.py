@@ -1,11 +1,7 @@
 from piece import Piece
 
-
-def modulus(num):
-    if num < 0:
-        return num * -1
-    return num
-
+# nije taj cuveni rook nego rock ali svakako
+# https://i.ytimg.com/vi/Mw3jK9YwOxk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgSCg1MA8=&rs=AOn4CLADLNZ64XZMOhvfep-dTNe4ITNcBQ
 
 class Rook(Piece):
     def __init__(self, row, col, color):
@@ -16,12 +12,12 @@ class Rook(Piece):
     
     def figures_on_the_way(self, row1, col1, board):
         if self.row - row1 == 0:
-            step = (col1-self.col)/modulus(col1-self.col)
+            step = (col1-self.col)/abs(col1-self.col)
             for i in range(self.col+1, col1, step):
                 if board[self.row][i] is not None:
                     return True
         if self.col - col1 == 0:
-            step = (row1-self.row)/modulus(col1-self.col)
+            step = (row1-self.row)/abs(col1-self.col)
             for i in range(self.row+1, row1, step):
                 if board[i][self.col] is not None:
                     return True

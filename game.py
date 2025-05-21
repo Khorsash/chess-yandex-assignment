@@ -5,16 +5,16 @@ from knight import Knight
 from bishop import Bishop
 from rook import Rook
 from king import King
- 
 
-# Handy function for getting the opponent color
+import types
+
 def opponent(color):
     if color == WHITE:
         return BLACK
     return WHITE
  
 
-def print_board(board): # Print the board as a text
+def print_board(board):
     print('     +----+----+----+----+----+----+----+----+')
     for row in range(7, -1, -1):
         print(' ', row, end='  ')
@@ -59,11 +59,18 @@ class Board:
         self.field[7][3] = Queen(7, 3, BLACK)
         self.field[7][4] = King(7, 4, BLACK)
 
+        self.white: list[Piece] = [self.field[0][0], self.field[0][7], self.field[0][1], self.field[0][6],
+                                   self.field[0][2], self.field[0][5], self.field[0][3], self.field[0][4]]
+
+        self.black: list[Piece] = [self.field[7][0], self.field[7][7], self.field[7][1], self.field[7][6],
+                                   self.field[7][2], self.field[7][5], self.field[7][3], self.field[7][4]]
         for i in range(0, 8):
             self.field[1][i] = Pawn(1, i, WHITE)
+            self.white.append(self.field[1][i])
 
         for i in range(0, 8):
             self.field[6][i] = Pawn(6, i, BLACK)
+            self.black.append(self.field[6][i])
 
     def current_player_color(self):
         return self.color
@@ -85,7 +92,7 @@ class Board:
         if not correct_coords(row, col) or not correct_coords(row1, col1):
             return False
         if row == row1 and col == col1:
-            return False  # You cannot move to the same square
+            return False 
         piece = self.field[row][col]
         if piece is None:
             return False
@@ -95,11 +102,22 @@ class Board:
             return False
         if not piece.can_move(row1, col1):
             return False
-        self.field[row][col] = None  # Remove piece
-        self.field[row1][col1] = piece  # Place the piece in another square
+        self.field[row][col] = None
+        self.field[row1][col1] = piece 
         piece.set_position(row1, col1)
         self.color = opponent(self.color)
         return True
+    
+    def is_position_attacked(self, row1, col1):
+        pieces_to_check = []
+        if self.color == WHITE:
+            pieces_to_check = self.white
+        else:
+            pieces_to_check = self.black
+        for piece in pieces_to_check:
+            if piece.can_move(row1, col1, self.field):
+                return True
+        return False
  
 
 def main():
