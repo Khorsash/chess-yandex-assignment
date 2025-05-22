@@ -6,6 +6,8 @@ from bishop import Bishop
 from rook import Rook
 from king import King
 
+import types
+
 def opponent(color):
     if color == WHITE:
         return BLACK
@@ -58,10 +60,13 @@ class Board:
         self.field[7][4] = King(7, 4, BLACK)
 
         self.white = [self.field[0][0], self.field[0][7], self.field[0][1], self.field[0][6],
-                                   self.field[0][2], self.field[0][5], self.field[0][3], self.field[0][4]]
+                                   self.field[0][2], self.field[0][5], self.field[0][3]]
+        self.white_king = self.field[0][4]
 
         self.black = [self.field[7][0], self.field[7][7], self.field[7][1], self.field[7][6],
-                                   self.field[7][2], self.field[7][5], self.field[7][3], self.field[7][4]]
+                                   self.field[7][2], self.field[7][5], self.field[7][3]]
+        self.black_king = self.field[7][4]
+
         for i in range(0, 8):
             self.field[1][i] = Pawn(1, i, WHITE)
             self.white.append(self.field[1][i])
@@ -100,42 +105,71 @@ class Board:
             return False
         if not piece.can_move(row1, col1):
             return False
+        if self.is_move_under_check(row, col, row1, col1):
+            return False
         self.field[row][col] = None
+
+        if self.color == WHITE and self.field[row1][col1] != None:
+            self.black.remove(self.field[row1][col1])
+        if self.color == BLACK and self.field[row1][col1] != None:
+            self.white.remove(self.field[row1][col1])
+        
         self.field[row1][col1] = piece 
+
         if isinstance(piece, Pawn) and piece.start_position and abs(row1-row) == 2:
             piece.start_position = False
+        
         piece.set_position(row1, col1)
         self.color = opponent(self.color)
+
         return True
     
     def is_position_attacked(self, row1, col1):
         pieces_to_check = []
         if self.color == WHITE:
-            pieces_to_check = self.white
-        else:
             pieces_to_check = self.black
+        else:
+            pieces_to_check = self.white
         for piece in pieces_to_check:
             if piece.can_move(row1, col1, self.field):
                 return True
         return False
+    
+    def is_move_under_check(self, row, col, row1, col1):
+        piece0 = self.field[row][col]
+        piece1 = self.field[row1][col1]
+        self.field[row][col] = None
+        self.field[row1][col1] = piece0
+        piece0.set_position(row1, col1)
+        king: Piece = Piece(-1, -1, WHITE)
+        if self.color == WHITE:
+            king = self.white_king
+        else:
+            king = self.black_king
+        is_king_checked = self.is_position_attacked(king.row, king.col)
+        self.field[row][col] = piece0
+        self.field[row1][col1] = piece1
+        piece0.set_position(row, col)
+        if is_king_checked:
+            return True
+        return False
  
 
 def main():
-    # Creating a chessboard
     board = Board()
-    # Loop for player commands
     while True:
-        # Display the position of pieces on the board
         print_board(board)
-        # commands help
-        # Invite the player of the correct color
+
         if board.current_player_color() == WHITE:
             print('White move:')
         else:
             print('Black move:')
+
         command = input()
+
         if command == 'exit':
             break
+        
         move_type, row, col, row1, col1 = command.split()
         row, col, row1, col1 = int(row), int(col), int(row1), int(col1)
         if board.move_piece(row, col, row1, col1):
