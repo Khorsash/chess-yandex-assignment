@@ -15,7 +15,18 @@ class Queen(Piece):
                 pm.append((self.row, i))
             if board[i][self.col] is None or board[i][self.col].get_color() != self.color:
                 pm.append((i, self.col))
-        
+        for l in [1, -1]:
+            for k in [1, -1]:
+                i, j = self.row+l, self.col+k
+                while self.can_move(i, j, board):
+                    if board[i][j] is not None and board[i][j].get_color() == self.color:
+                        break
+                    if board[i][j] is not None and board[i][j].get_color() != self.color:
+                        pm.append((i, j))
+                        break
+                    pm.append((i, j))
+                    i += l
+                    j += k
         return pm
     
     def figures_on_the_way(self, row1, col1, board):
