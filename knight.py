@@ -8,7 +8,7 @@ class Knight(Piece):
     def char(self):
         return "N"
     
-    def possible_moves(self, board):
+    def possible_moves(self, board) -> list[tuple]:
         pm = []
         for i in [2, -2]:
             for j in [1, -2]:

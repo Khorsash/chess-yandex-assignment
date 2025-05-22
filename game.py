@@ -47,7 +47,8 @@ def correct_coords(row, col):
 class Board:
     def __init__(self):
         
-        self.pawnIsDone = False
+        self.pawn_is_done = False
+        self.is_game_over = False
         self.color = WHITE
         self.field = []
         for row in range(8):
@@ -133,7 +134,7 @@ class Board:
             piece.start_position = False
 
         if isinstance(piece, Pawn) and (row1 == 7 or row1 == 0):
-            self.pawnIsDone = True
+            self.pawn_is_done = True
         
         piece.set_position(row1, col1)
         self.color = opponent(self.color)
@@ -169,7 +170,54 @@ class Board:
         if is_king_checked:
             return True
         return False
- 
+    
+    
+    def is_checkmate(self, row, col, row1, col1):
+        king: Piece = Piece(0,0,self.color)
+        pieces_to_check: list[Piece] = []
+        if self.color == WHITE:
+            king: King = self.black_king
+            pieces_to_check = self.black
+        else:
+            king: King = self.white_king
+            pieces_to_check = self.white
+        piece0 = self.field[row, col]
+        piece1 = self.field[row1, col1]
+        self.field[row][col] = None
+        self.field[row1][col1] = piece0
+        piece0.set_position(row1, col1)
+        self.color = opponent(self.color)
+        for mv in king.possible_moves(self.field):
+            r1, c1 = mv
+            if not self.is_position_attacked(r1, c1):
+                self.field[row][col] = piece0
+                self.field[row1][col1] = piece1
+                piece0.set_position(row, col)
+                self.color = opponent(self.color)
+                return False
+        found_counter = False
+        # TODO: debug here if i actually for an accident checking wrong set of pieces
+        #       like black pieces when i need to check is black king relatively safe after
+        #       after move of white
+        for pc in pieces_to_check:
+            ppms = pc.possible_moves(self.field)
+            pc1 = None
+            r0, c0 = pc.row, pc.col
+            for mv in ppms:
+                r1, c1 = mv
+                pc1 = self.field[r1][c1]
+                self.field[r0][r0] = None
+                self.field[r1][c1] = pc
+                pc.set_position(r1, c1)
+                if not self.is_position_attacked(king.row, king.col):
+                    found_counter = True
+                self.field[r0][c0] = pc
+                self.field[r1][c1] = pc1
+                pc.set_position(r0, c0)
+                if found_counter:
+                    return False
+                
+            
 
 def main():
     board = Board()
@@ -188,7 +236,7 @@ def main():
         
         row, col, row1, col1 = notation_to_coords(command)
         if board.move_piece(row, col, row1, col1):
-            if board.pawnIsDone:
+            if board.pawn_is_done:
                 inp = ''
                 while inp.lower() not in list("bnqr"):
                     inp = input("Input 1 char of figure you want to change pawn with: ")
@@ -206,6 +254,7 @@ def main():
                         board.field[row1][col1] = Queen(row1, col1, pawn_p.get_color())
                     case 'r':
                         board.field[row1][col1] = Rook(row1, col1, pawn_p.get_color())
+                board.pawn_is_done = False
             print('Move successful')
         else:
             print('Incorrect move. Try another one.')

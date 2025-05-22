@@ -10,7 +10,7 @@ class Rook(Piece):
     def char(self):
         return "R"
     
-    def possible_moves(self, board):
+    def possible_moves(self, board) -> list[tuple]:
         pm = []
         for i in range(8):
             if board[self.row][i] is None or board[self.row][i].get_color() != self.color:

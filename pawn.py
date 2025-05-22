@@ -11,7 +11,7 @@ class Pawn(Piece):
     def char(self):
         return 'P'
     
-    def possible_moves(self, board):
+    def possible_moves(self, board) -> list[tuple]:
         pm = [(self.row+2, self.col), (self.row+1, self.col), (self.row+1, self.col+1), (self.row+1, self.col-1)]
         for m in pm[:]:
             if not self.can_move(m[0], m[1], board):
