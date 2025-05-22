@@ -46,7 +46,7 @@ def correct_coords(row, col):
 
 class Board:
     def __init__(self):
-
+        
         self.pawnIsDone = False
         self.color = WHITE
         self.field = []
@@ -211,17 +211,5 @@ def main():
             print('Incorrect move. Try another one.')
 
 if __name__  == "__main__":
-    k = King(1, 1, WHITE)
-    board = []
-    for row in range(8):
-        board.append([None] * 8)
-    board[1][1] = k
-    pm = k.possible_moves(board)
-    for i in range(7, -1, -1):
-        for j in range(8):
-            if (i, j) in pm:
-                print('x', end='')
-            else:
-                print('-', end='')
-        print()
+    pass
     

@@ -10,6 +10,12 @@ class Knight(Piece):
     
     def possible_moves(self, board):
         pm = []
+        for i in [2, -2]:
+            for j in [1, -2]:
+                if self.can_move(self.row+i, self.col+j) and board[self.row+i][self.col+j].get_color() != self.color:
+                    pm.append((i, j))
+                if self.can_move(self.row+j, self.col+i) and board[self.row+j][self.col+i].get_color() != self.color:
+                    pm.append((j, i))
         return pm
     
     def can_move(self, row1, col1, board):

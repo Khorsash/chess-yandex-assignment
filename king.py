@@ -12,7 +12,7 @@ class King(Piece):
         pm = []
         for i in [1, 0, -1]:
             for j in [1, 0, -1]:
-                if self.can_move(self.row+i, self.col+j, board): 
+                if self.can_move(self.row+i, self.col+j, board) and board[self.row+i][self.col+j].get_color() != self.color:
                     pm.append((self.row+i, self.col+j))
         pm.remove((self.row, self.col))
         return pm

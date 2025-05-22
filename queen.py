@@ -10,6 +10,12 @@ class Queen(Piece):
     
     def possible_moves(self, board):
         pm = []
+        for i in range(8):
+            if board[self.row][i] is None or board[self.row][i].get_color() != self.color:
+                pm.append((self.row, i))
+            if board[i][self.col] is None or board[i][self.col].get_color() != self.color:
+                pm.append((i, self.col))
+        
         return pm
     
     def figures_on_the_way(self, row1, col1, board):

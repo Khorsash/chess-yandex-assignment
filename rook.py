@@ -1,6 +1,6 @@
 from piece import Piece
 
-# nije taj cuveni rook nego rock ali svakako
+# nije taj cuveni rook nego Rock ali svakako
 # https://i.ytimg.com/vi/Mw3jK9YwOxk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGHIgSCg1MA8=&rs=AOn4CLADLNZ64XZMOhvfep-dTNe4ITNcBQ
 
 class Rook(Piece):
@@ -12,6 +12,11 @@ class Rook(Piece):
     
     def possible_moves(self, board):
         pm = []
+        for i in range(8):
+            if board[self.row][i] is None or board[self.row][i].get_color() != self.color:
+                pm.append((self.row, i))
+            if board[i][self.col] is None or board[i][self.col].get_color() != self.color:
+                pm.append((i, self.col))
         return pm
     
     def figures_on_the_way(self, row1, col1, board):
