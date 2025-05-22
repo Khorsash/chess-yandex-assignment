@@ -10,6 +10,10 @@ class Rook(Piece):
     def char(self):
         return "R"
     
+    def possible_moves(self, board):
+        pm = []
+        return pm
+    
     def figures_on_the_way(self, row1, col1, board):
         if self.row - row1 == 0:
             step = (col1-self.col)/abs(col1-self.col)

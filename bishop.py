@@ -7,6 +7,10 @@ class Bishop(Piece):
     
     def char(self):
         return "B"
+    
+    def possible_moves(self, board):
+        pm = []
+        return pm
 
     def figures_on_the_way(self, row1, col1, board):
         if abs(row1-self.row) == abs(self.col - col1):

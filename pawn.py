@@ -10,6 +10,13 @@ class Pawn(Piece):
  
     def char(self):
         return 'P'
+    
+    def possible_moves(self, board):
+        pm = [(self.row+2, self.col), (self.row+1, self.col), (self.row+1, self.col+1), (self.row+1, self.col-1)]
+        for m in pm[:]:
+            if not self.can_move(m[0], m[1], board):
+                pm.remove(m)
+        return pm
 
     def can_move(self, row1, col1, board):
         if super().can_move(row1, col1, board):

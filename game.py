@@ -46,6 +46,8 @@ def correct_coords(row, col):
 
 class Board:
     def __init__(self):
+
+        self.pawnIsDone = False
         self.color = WHITE
         self.field = []
         for row in range(8):
@@ -129,6 +131,9 @@ class Board:
 
         if isinstance(piece, Pawn) and piece.start_position and abs(row1-row) == 2:
             piece.start_position = False
+
+        if isinstance(piece, Pawn) and (row1 == 7 or row1 == 0):
+            self.pawnIsDone = True
         
         piece.set_position(row1, col1)
         self.color = opponent(self.color)
@@ -181,12 +186,42 @@ def main():
         if command == 'exit':
             break
         
-        move_type, row, col, row1, col1 = command.split()
-        row, col, row1, col1 = int(row), int(col), int(row1), int(col1)
+        row, col, row1, col1 = notation_to_coords(command)
         if board.move_piece(row, col, row1, col1):
+            if board.pawnIsDone:
+                inp = ''
+                while inp.lower() not in list("bnqr"):
+                    inp = input("Input 1 char of figure you want to change pawn with: ")
+                pawn_p = board.field[row1][col1]
+                if pawn_p.get_color() == WHITE:
+                    board.white.remove(pawn_p)
+                else:
+                    board.black.remove(pawn_p)
+                match inp:
+                    case 'n':
+                        board.field[row1][col1] = Knight(row1, col1, pawn_p.get_color())
+                    case 'b':
+                        board.field[row1][col1] = Bishop(row1, col1, pawn_p.get_color())
+                    case 'q':
+                        board.field[row1][col1] = Queen(row1, col1, pawn_p.get_color())
+                    case 'r':
+                        board.field[row1][col1] = Rook(row1, col1, pawn_p.get_color())
             print('Move successful')
         else:
-            print('Coordinates incorrect. Try another move.')
+            print('Incorrect move. Try another one.')
 
 if __name__  == "__main__":
-    main()
+    k = King(1, 1, WHITE)
+    board = []
+    for row in range(8):
+        board.append([None] * 8)
+    board[1][1] = k
+    pm = k.possible_moves(board)
+    for i in range(7, -1, -1):
+        for j in range(8):
+            if (i, j) in pm:
+                print('x', end='')
+            else:
+                print('-', end='')
+        print()
+    

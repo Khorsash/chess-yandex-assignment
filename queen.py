@@ -8,6 +8,10 @@ class Queen(Piece):
     def char(self):
         return "Q"
     
+    def possible_moves(self, board):
+        pm = []
+        return pm
+    
     def figures_on_the_way(self, row1, col1, board):
         if abs(row1-self.row) == abs(self.col - col1):
             step = (row1-self.row)/abs(row1-self.row)

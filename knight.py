@@ -8,6 +8,10 @@ class Knight(Piece):
     def char(self):
         return "N"
     
+    def possible_moves(self, board):
+        pm = []
+        return pm
+    
     def can_move(self, row1, col1, board):
         if super().can_move(row1, col1, board):
             if row1 >= 0 and row1 < 8 and col1 >= 0 and col1 < 8:
