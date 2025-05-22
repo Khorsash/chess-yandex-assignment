@@ -6,14 +6,25 @@ from bishop import Bishop
 from rook import Rook
 from king import King
 
-import types
 
 def opponent(color):
     if color == WHITE:
         return BLACK
     return WHITE
- 
 
+
+def notation_to_coords(txt):
+    abc = "abcdefgh"
+    row0, col0 = int(txt.split("-")[0][0])-1, abc.index(txt.split("-")[0][1])
+    row1, col1 = int(txt.split("-")[1][0])-1, abc.index(txt.split("-")[1][1])
+    return row0, col0, row1, col1
+
+
+def coords_to_notation(row0, col0, row1, col1):
+    abc = "abcdefgh"
+    return abc[col0]+str(row0+1)+"-"+abc[col1]+str(row1+1)
+
+ 
 def print_board(board):
     print('     +----+----+----+----+----+----+----+----+')
     for row in range(7, -1, -1):
