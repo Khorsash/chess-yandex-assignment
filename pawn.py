@@ -17,7 +17,8 @@ class Pawn(Piece):
                 return True
             if self.col != col1 and board[row1][col1] is None:
                 return False
-
+            if board[row1][col1] is not None:
+                return False
             if self.color == WHITE:
                 direction = 1
                 start_row = 1
@@ -25,7 +26,7 @@ class Pawn(Piece):
                 direction = -1
                 start_row = 6
 
-            if self.row + direction == row1 and board[row1][col1] is None:
+            if self.row + direction == row1:
                 return True
     
             if self.row == start_row and self.row + 2 * direction == row1:
