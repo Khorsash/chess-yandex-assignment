@@ -13,6 +13,12 @@ def opponent(color):
     return WHITE
 
 
+def is_notation(txt):
+    abc = "abcdefgh"
+    digits = "12345678"
+    return txt[0] in abc and txt[1] in digits and txt[2] == "-" and txt[3] in abc and txt[4] in digits
+
+
 def notation_to_coords(txt):
     abc = "abcdefgh"
     row0, col0 = int(txt.split("-")[0][0])-1, abc.index(txt.split("-")[0][1])
@@ -273,10 +279,11 @@ def main():
         else:
             print('Black move:')
 
-        command = input()
-
+        command = input("Input move in chess notation or write 'exit' to exit:\n")
         if command == 'exit':
             break
+        while not is_notation(command):
+            command = input("Input move in chess notation or write 'exit' to exit:\n")
         
         row, col, row1, col1 = notation_to_coords(command)
         if board.move_piece(row, col, row1, col1):
@@ -306,5 +313,4 @@ def main():
             break
 
 if __name__  == "__main__":
-    pass
-    
+    main()
