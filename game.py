@@ -169,7 +169,7 @@ class Board:
         self.field[row][col] = None
         self.field[row1][col1] = piece0
         piece0.set_position(row1, col1)
-        king: Piece = Piece(-1, -1, WHITE)
+        king = Piece(-1, -1, WHITE)
         if self.color == WHITE:
             king = self.white_king
         else:
@@ -184,13 +184,13 @@ class Board:
     
     
     def is_checkmate(self, row, col, row1, col1):
-        king: Piece = Piece(0,0,self.color)
-        pieces_to_check: list[Piece] = []
+        king = Piece(0,0,self.color)
+        pieces_to_check = []
         if self.color == WHITE:
-            king: King = self.black_king
+            king = self.black_king
             pieces_to_check = self.black
         else:
-            king: King = self.white_king
+            king = self.white_king
             pieces_to_check = self.white
         piece0 = self.field[row, col]
         piece1 = self.field[row1, col1]
@@ -239,13 +239,13 @@ class Board:
     
 
     def is_stalemate(self, row, col, row1, col1):
-        king: Piece = Piece(0,0,self.color)
-        pieces_to_check: list[Piece] = []
+        king = Piece(0,0,self.color)
+        pieces_to_check = []
         if self.color == WHITE:
-            king: King = self.black_king
+            king = self.black_king
             pieces_to_check = self.black
         else:
-            king: King = self.white_king
+            king = self.white_king
             pieces_to_check = self.white
         piece0 = self.field[row, col]
         piece1 = self.field[row1, col1]
