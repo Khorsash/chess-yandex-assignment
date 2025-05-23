@@ -121,6 +121,11 @@ class Board:
             return False
         if self.is_move_under_check(row, col, row1, col1):
             return False
+        if self.is_checkmate(row, col, row1, col1):
+            self.is_game_over = True
+        if self.is_stalemate(row, col, row1, col1):
+            self.is_game_over = True
+        
         self.field[row][col] = None
 
         if self.color == WHITE and self.field[row1][col1] != None:
@@ -215,8 +220,47 @@ class Board:
                 self.field[r1][c1] = pc1
                 pc.set_position(r0, c0)
                 if found_counter:
+                    self.field[row][col] = piece0
+                    self.field[row1][col1] = piece1
+                    piece0.set_position(row, col)
+                    self.color = opponent(self.color)
                     return False
-                
+        self.field[row][col] = piece0
+        self.field[row1][col1] = piece1
+        piece0.set_position(row, col)
+        self.color = opponent(self.color)
+        return True
+    
+
+    def is_stalemate(self, row, col, row1, col1):
+        king: Piece = Piece(0,0,self.color)
+        pieces_to_check: list[Piece] = []
+        if self.color == WHITE:
+            king: King = self.black_king
+            pieces_to_check = self.black
+        else:
+            king: King = self.white_king
+            pieces_to_check = self.white
+        piece0 = self.field[row, col]
+        piece1 = self.field[row1, col1]
+        self.field[row][col] = None
+        self.field[row1][col1] = piece0
+        piece0.set_position(row1, col1)
+        self.color = opponent(self.color)
+        king_can_move = False
+        ppm = []
+        for pc in pieces_to_check:
+            ppm += pc.possible_moves(self.field)
+        for mv in king.possible_moves():
+            if not self.is_position_attacked(mv[0], mv[1]):
+                king_can_move = True
+        self.field[row][col] = piece0
+        self.field[row1][col1] = piece1
+        piece0.set_position(row, col)
+        self.color = opponent(self.color)
+        if not king_can_move and len(ppm):
+            return False
+        return True
             
 
 def main():
@@ -258,6 +302,8 @@ def main():
             print('Move successful')
         else:
             print('Incorrect move. Try another one.')
+        if board.is_game_over:
+            break
 
 if __name__  == "__main__":
     pass
