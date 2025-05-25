@@ -13,7 +13,7 @@ class Piece:
     def can_move(self, row1, col1, board):
         return 0 <= row1 < 8 and 0 <= col1 < 8 and not (self.row == row1 and self.col == col1)
     
-    def possible_moves(self, board) -> list[tuple]:
+    def possible_moves(self, board):
         return []
 
     def set_position(self, row1, col1):
