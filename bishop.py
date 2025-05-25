@@ -8,7 +8,7 @@ class Bishop(Piece):
     def char(self):
         return "B"
     
-    def possible_moves(self, board) -> list[tuple]:
+    def possible_moves(self, board):
         pm = []
 
         for l in [1, -1]:

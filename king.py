@@ -8,7 +8,7 @@ class King(Piece):
     def char(self):
         return "K"
     
-    def possible_moves(self, board) -> list[tuple]:
+    def possible_moves(self, board):
         pm = []
         for i in [1, 0, -1]:
             for j in [1, 0, -1]:

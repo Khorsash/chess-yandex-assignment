@@ -198,6 +198,12 @@ class Board:
         self.field[row1][col1] = piece0
         piece0.set_position(row1, col1)
         self.color = opponent(self.color)
+        if self.is_position_attacked(king.row, king.col):
+            self.field[row][col] = piece0
+            self.field[row1][col1] = piece1
+            piece0.set_position(row, col)
+            self.color = opponent(self.color)
+            return False
         for mv in king.possible_moves(self.field):
             r1, c1 = mv
             if not self.is_position_attacked(r1, c1):
@@ -247,6 +253,12 @@ class Board:
         else:
             king = self.white_king
             pieces_to_check = self.white
+        if not self.is_position_attacked(king.row, king.col):
+            self.field[row][col] = piece0
+            self.field[row1][col1] = piece1
+            piece0.set_position(row, col)
+            self.color = opponent(self.color)
+            return False
         piece0 = self.field[row, col]
         piece1 = self.field[row1, col1]
         self.field[row][col] = None
@@ -264,7 +276,7 @@ class Board:
         self.field[row1][col1] = piece1
         piece0.set_position(row, col)
         self.color = opponent(self.color)
-        if not king_can_move and len(ppm):
+        if not king_can_move and len(ppm) == 0:
             return False
         return True
             
