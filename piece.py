@@ -1,5 +1,3 @@
-import types
-
 WHITE = 1
 BLACK = 2
 
